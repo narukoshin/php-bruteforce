@@ -1,4 +1,8 @@
 <?php
+    /**
+     * @package WordPress BruteForce
+     * @author  Yuu Hirokabe (www.yuuhiroka.be)
+     */
     class Wordpress{
         /**
          * @var string  $default
@@ -168,12 +172,24 @@
                         print           "* PASSWORD FOUND !!!\n*\n";
                         print           "* {$pass}:" . MD5($pass) . "\n";
                         print           "* Elapsed time: {$minutes}min. & {$seconds}sec.\n";
+                        print           "* Total {$passwords_test} passwords tested\n";
                         print           "***\033[0m\n";
                         $this->bruteForce = False;
                         break;break;
                     }
                 }
             }
+        }
+        /**
+         * Changing user password // varbūt kaut kādā nākotnē būs!!!
+         * Gaļax čakarēties... 
+         * https://simplehtmldom.sourceforge.io/
+         * 
+         * @return void
+         * 
+         */
+        private function changePassword(){
+            return;
         }
     }
 
